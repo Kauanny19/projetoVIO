@@ -59,7 +59,7 @@ function listUsers() {
         <h5>Lista de usuários</h5>
         <TableContainer component={Paper} style={{margin:"2px"}}>
           <Table size="small">
-            <TableHead style={{backgroundColor: "brown", borderStyle:"solid"}}>
+            <TableHead style={{backgroundColor: "plum", borderStyle:"solid"}}>
               <TableRow>
                 <TableCell align="center">
                   Nome
