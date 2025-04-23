@@ -14,7 +14,7 @@ import { Button, IconButton, Alert, Snackbar } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
 function listEventos() {
-  const [eventos, setEventos] = useState([]);
+  const [events, setEventos] = useState([]);
   const navigate = useNavigate();
 
   async function getEventos() {
@@ -56,7 +56,7 @@ function listEventos() {
   return (
     <div>
       {events.length === 0 ? (
-        <h1>Carregando usuários</h1>
+        <h1>Carregando eventos</h1>
       ) : (
         <div>
           <h5>Lista de eventos</h5>
