@@ -13,14 +13,14 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
-          <Route path="/users" element={
-            <ProtectedRoute>
-              <ListUsers />
-            </ProtectedRoute>
-          }/>
           <Route path="/eventos" element={
             <ProtectedRoute>
               <ListEventos/>
+            </ProtectedRoute>
+          }/>
+          <Route path="/users" element={
+            <ProtectedRoute>
+              <ListUsers />
             </ProtectedRoute>
           }/>
         </Routes>

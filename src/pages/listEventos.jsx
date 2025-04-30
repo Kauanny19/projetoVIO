@@ -13,6 +13,7 @@ import api from "../axios/axios";
 import { Button, IconButton, Alert, Snackbar } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Link, useNavigate } from "react-router-dom";
+import ModalCriarIngresso from "../components/ModalCriarIngresso";
 
 function listEventos() {
   const [events, setEventos] = useState([]);
@@ -21,22 +22,22 @@ function listEventos() {
     open: false,
 
     // Nível do alerta (sucess, error, warning, etc)
-    severity:"",
+    severity: "",
 
     // Mensagem que será exibida
-    message:""
+    message: "",
   });
 
   //Função para exibir o alerta
   const showAlert = (severity, message) => {
-    setAlert({open: true, severity, message})
+    setAlert({ open: true, severity, message });
   };
 
   //Fechar o alerta
   const handleCloseAlert = () => {
-    setAlert({...alert, open: false})
+    setAlert({ ...alert, open: false });
   };
-  
+
   const navigate = useNavigate();
 
   async function getEventos() {
@@ -53,14 +54,14 @@ function listEventos() {
   }
 
   async function deleteEvento(id) {
-    try{
+    try {
       await api.deleteEvento(id);
       await getEventos();
       showAlert("success", "Evento excluído com sucesso!");
-    }catch(error){
+    } catch (error) {
       console.log("Erro ao deletar evento...", error);
       showAlert("error", error.response.data.error);
-    }    
+    }
   }
 
   const listEventos = events.map((evento) => {
@@ -72,11 +73,15 @@ function listEventos() {
         <TableCell align="center">{evento.local}</TableCell>
         <TableCell align="center">
           <IconButton onClick={() => deleteEvento(evento.id)}>
-            <DeleteOutlineIcon color="error"/>
+            <DeleteOutlineIcon color="error" />
           </IconButton>
-        </TableCell>      
+        </TableCell>
+        <TableCell align="center">
+          <IconButton onClick={() => abrirModalIngresso(evento)}>
+            Adicionar
+          </IconButton>
+        </TableCell>
       </TableRow>
-      
     );
   });
 
@@ -92,16 +97,42 @@ function listEventos() {
     getEventos();
   }, []);
 
+  const [eventoSelecionado, setEventoSelecionado] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const abrirModalIngresso = (evento) => {
+    setEventoSelecionado(evento);
+    setModalOpen(true);
+  };
+
+  const fecharModalIngresso = () => {
+    setModalOpen(false);
+    setEventoSelecionado("");
+  };
+
   return (
     <div>
-      <Snackbar open={alert.open} autoHideDuration={3000} onClose={handleCloseAlert} 
-      anchorOrigin={{vertical:"top", horizontal:"center"}}>
-        <Alert onClose={handleCloseAlert}
-        severity={alert.severity}
-        sx={{width: "100%"}}>
+      <Snackbar
+        open={alert.open}
+        autoHideDuration={3000}
+        onClose={handleCloseAlert}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseAlert}
+          severity={alert.severity}
+          sx={{ width: "100%" }}
+        >
           {alert.message}
         </Alert>
       </Snackbar>
+
+      <ModalCriarIngresso
+        open={modalOpen}
+        onClose={fecharModalIngresso}
+        eventoSelecionado={eventoSelecionado}
+      />
+
       {events.length === 0 ? (
         <h1>Carregando eventos</h1>
       ) : (
@@ -117,8 +148,8 @@ function listEventos() {
                   <TableCell align="center">Descrição</TableCell>
                   <TableCell align="center">Data e Hora</TableCell>
                   <TableCell align="center">Local</TableCell>
-                  <TableCell align="center">Ações</TableCell>
-
+                  <TableCell align="center">Excluir</TableCell>
+                  <TableCell align="center">Criar Ingresso</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>{listEventos}</TableBody>
