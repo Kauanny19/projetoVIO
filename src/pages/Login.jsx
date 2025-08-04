@@ -33,7 +33,7 @@ function Login() {
         alert(response.data.message);
         localStorage.setItem("authenticated", true);
         localStorage.setItem("token", response.data.token);
-        navigate("eventos/");
+        navigate("CreateEvent/");
       },
       (error) => {
         console.log(error);
